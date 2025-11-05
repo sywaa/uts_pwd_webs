@@ -1,0 +1,117 @@
+    :root {
+            --color-primary: #8B5CF6; /* Ungu neon (Violet) */
+            --color-secondary: #06B6D4; /* Cyan (Cyan) */
+            --color-background: #0F172A; /* Dark Slate */
+            --color-text: #E2E8F0; /* Light Gray */
+            --font-main: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            overflow-x: hidden;
+        }
+
+        /* Kelas untuk bingkai atau layout utama */
+        .portfolio-frame {
+            display: grid;
+            grid-template-columns: 1fr; /* Default: Satu kolom untuk mobile */
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            border: 2px solid var(--color-primary); /* Border 'frame' */
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        /* Desktop Layout (Frame 2 kolom) */
+        @media (min-width: 768px) {
+            .portfolio-frame {
+                grid-template-columns: 250px 1fr; /* Navigasi 250px, Konten 1fr */
+            }
+        }
+
+        /* Navigasi kustom dengan efek neon */
+        .nav-link {
+            transition: all 0.3s ease-in-out;
+            color: var(--color-text);
+            position: relative;
+            padding: 0.75rem 1rem;
+            display: block;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus,
+         html:not(:target) .nav-link[href="#home"] { 
+            color: var(--color-secondary);
+            background-color: rgba(6, 182, 212, 0.1);
+            transform: translateX(5px);
+        }
+        
+        /* Aturan untuk membatalkan sorotan pada link #home saat ada hash lain:
+        Ketika ada target halaman (#about, #portfolio, #contact), link #home kembali normal.
+        Ini yang memastikan "Beranda" tidak disorot saat Anda berada di halaman lain.
+        */
+        html:target .nav-link[href="#home"] {
+            color: var(--color-text);
+            background-color: transparent;
+            transform: translateX(0);
+        }
+
+        /* Keyframes untuk Animasi Fade-In Halaman */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === PURE CSS NAVIGATION LOGIC === */
+        .page-content {
+            display: none; /* Sembunyikan semua halaman secara default */
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: calc(100vh - 2rem);
+            /* Reset animation on default state */
+            animation: none;
+        }
+
+        /* Tampilkan halaman home secara default saat tidak ada hash di URL */
+        html:not(:target) #home {
+            display: block;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Tampilkan halaman yang ditargetkan menggunakan hash URL */
+        .page-content:target {
+            display: block;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        /* === END PURE CSS NAVIGATION LOGIC === */
+        
+        /* Animasi Tombol Kontak */
+        .contact-btn {
+            background-image: linear-gradient(to right, var(--color-primary) 0%, var(--color-secondary) 100%);
+            transition: all 0.4s;
+            background-size: 200% auto;
+            box-shadow: 0 4px 15px 0 rgba(139, 92, 246, 0.7);
+        }
+
+        .contact-btn:hover {
+            background-position: right center; /* Efek pergeseran gradient saat hover */
+            box-shadow: 0 6px 20px 0 rgba(6, 182, 212, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Garis pemisah neon di About */
+        .neon-divider {
+            width: 50px;
+            height: 4px;
+            background-color: var(--color-secondary);
+            border-radius: 2px;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 10px var(--color-secondary);
+        }

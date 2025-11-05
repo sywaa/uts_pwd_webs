@@ -1,1 +1,357 @@
-# uts_pwd-web
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio - Aufa Siti Dhiyaun Nasywa</title>
+    <!-- Memuat Tailwind CSS untuk styling cepat dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Font Inter dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /*
+        Simulasi CSS Eksternal (dalam satu file)
+        Menggunakan CSS Kustom untuk efek unik dan animasi
+        CATATAN: Navigasi antar halaman menggunakan Pure CSS (:target)
+        */
+        :root {
+            --color-primary: #8B5CF6; /* Ungu neon (Violet) */
+            --color-secondary: #06B6D4; /* Cyan (Cyan) */
+            --color-background: #0F172A; /* Dark Slate */
+            --color-text: #E2E8F0; /* Light Gray */
+            --font-main: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            overflow-x: hidden;
+        }
+
+        /* Kelas untuk bingkai atau layout utama */
+        .portfolio-frame {
+            display: grid;
+            grid-template-columns: 1fr; /* Default: Satu kolom untuk mobile */
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            border: 2px solid var(--color-primary); /* Border 'frame' */
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        /* Desktop Layout (Frame 2 kolom) */
+        @media (min-width: 768px) {
+            .portfolio-frame {
+                grid-template-columns: 250px 1fr; /* Navigasi 250px, Konten 1fr */
+            }
+        }
+
+        /* Navigasi kustom dengan efek neon */
+        .nav-link {
+            transition: all 0.3s ease-in-out;
+            color: var(--color-text);
+            position: relative;
+            padding: 0.75rem 1rem;
+            display: block;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus,
+         html:not(:target) .nav-link[href="#home"] { 
+            color: var(--color-secondary);
+            background-color: rgba(6, 182, 212, 0.1);
+            transform: translateX(5px);
+        }
+        
+        /* Aturan untuk membatalkan sorotan pada link #home saat ada hash lain:
+        Ketika ada target halaman (#about, #portfolio, #contact), link #home kembali normal.
+        Ini yang memastikan "Beranda" tidak disorot saat Anda berada di halaman lain.
+        */
+        html:target .nav-link[href="#home"] {
+            color: var(--color-text);
+            background-color: transparent;
+            transform: translateX(0);
+        }
+
+        /* Keyframes untuk Animasi Fade-In Halaman */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === PURE CSS NAVIGATION LOGIC === */
+        .page-content {
+            display: none; /* Sembunyikan semua halaman secara default */
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: calc(100vh - 2rem);
+            /* Reset animation on default state */
+            animation: none;
+        }
+
+        /* Tampilkan halaman home secara default saat tidak ada hash di URL */
+        html:not(:target) #home {
+            display: block;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Tampilkan halaman yang ditargetkan menggunakan hash URL */
+        .page-content:target {
+            display: block;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        /* === END PURE CSS NAVIGATION LOGIC === */
+        
+        /* Animasi Tombol Kontak */
+        .contact-btn {
+            background-image: linear-gradient(to right, var(--color-primary) 0%, var(--color-secondary) 100%);
+            transition: all 0.4s;
+            background-size: 200% auto;
+            box-shadow: 0 4px 15px 0 rgba(139, 92, 246, 0.7);
+        }
+
+        .contact-btn:hover {
+            background-position: right center; /* Efek pergeseran gradient saat hover */
+            box-shadow: 0 6px 20px 0 rgba(6, 182, 212, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Garis pemisah neon di About */
+        .neon-divider {
+            width: 50px;
+            height: 4px;
+            background-color: var(--color-secondary);
+            border-radius: 2px;
+            margin-bottom: 1rem;
+            box-shadow: 0 0 10px var(--color-secondary);
+        }
+
+        /* Styling Tambahan untuk Proyek */
+        .skill-badge {
+            @apply px-3 py-1 bg-slate-700 text-cyan-300 text-xs font-medium rounded-full shadow-md transition duration-300 ease-in-out hover:bg-cyan-700 hover:text-white;
+        }
+        .project-card {
+            @apply p-6 bg-slate-800 rounded-lg shadow-xl border border-violet-700/50 transform hover:scale-[1.03] transition duration-300 ease-in-out;
+        }
+        .project-link {
+            @apply text-cyan-400 text-sm font-semibold mt-3 inline-block hover:text-cyan-300 transition duration-300;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="portfolio-frame">
+
+        <!-- 1. Navigasi (Menu Antar Halaman) -->
+        <nav id="sidebar-nav" class="bg-slate-900/50 p-6 border-r border-violet-700/50 rounded-l-lg md:rounded-l-none">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-extrabold tracking-wider text-white">PORTFOLIO</h1>
+                <p class="text-sm text-cyan-400">Untuk UTS</p>
+            </div>
+            
+            <ul class="space-y-3">
+                <!-- Navigasi menggunakan hash (#) tanpa JavaScript -->
+                <li><a href="#home" class="nav-link active" id="link-home">🏠 Beranda</a></li>
+                <li><a href="#about" class="nav-link" id="link-about">👤 Tentang Saya</a></li>
+                <li><a href="#portfolio" class="nav-link" id="link-portfolio">💻 Portofolio</a></li>
+                <li><a href="#contact" class="nav-link" id="link-contact">✉️ Kontak</a></li>
+            </ul>
+        </nav>
+
+        <!-- 2. Area Konten Utama -->
+        <main class="bg-slate-900/80 rounded-r-lg">
+
+            <!-- a) Home Page -->
+            <section id="home" class="page-content">
+                <div class="text-center py-16 md:py-32">
+                    <!-- LOGO KAMPUS DI SINI - Dibuat BULAT (Circular) -->
+                    <div class="w-48 h-48 mx-auto mb-6 p-2 overflow-hidden bg-gray-700 rounded-full border-4 border-violet-500 shadow-2xl">
+                        <!-- Tambahkan rounded-full pada gambar untuk memastikan bentuk bulat -->
+                        <img src="wastulogo.png" alt="Logo Sekolah Tinggi Teknik Wastu Kancana" 
+                             class="w-full h-full object-contain p-4 rounded-full" 
+                             onerror="this.onerror=null;this.src='https://placehold.co/180x180/4F46E5/E2E8F0?text=LOGO+KAMPU S';">
+                    </div>
+                    
+                    <h2 class="text-5xl md:text-7xl font-black mb-4 text-white animate-pulse">Aufa Siti Dhiyaun Nasywa</h2>
+                    <p class="text-xl md:text-2xl text-cyan-400 font-light tracking-widest">
+                        Saya adalah Mahasiswa di Sekolah Tinggi Teknik Wastu Kancana
+                    </p>
+                    
+                    <div class="mt-8 max-w-xl mx-auto p-4 bg-slate-800/70 rounded-xl border border-violet-600/50 shadow-lg">
+                        <p class="text-lg leading-relaxed">
+                            Saya adalah seorang pelajar yang tertarik pada bidang Teknologi dan pada bidang Graphic Design. Saya mampu dan telah mendesain beberapa poster atau konten di instagram semasa SMA. Contoh desain yang telah saya buat ada di menu "Portofolio".
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- b) About Page -->
+            <section id="about" class="page-content">
+                <h2 class="text-4xl font-bold mb-8 border-b-4 border-cyan-400 pb-2 inline-block">Tentang Saya</h2>
+
+                <div class="space-y-10">
+                    
+                    <!-- Informasi Diri -->
+                    <div class="p-6 bg-slate-800/50 rounded-xl shadow-lg border-l-4 border-violet-500">
+                        <h3 class="text-2xl font-semibold mb-3 text-violet-300">Biodata Pribadi</h3>
+                        <p>Nama: Aufa Siti Dhiyaun Nasywa</p>
+                        <p>Nim: 251351021</p>
+                        <p>Program studi: Teknik Informatika</p>
+                        <p>Kelas: Pagi A</p>
+                        <p>Jenis kelamin: Perempuan</p>
+                        <p>Tempat lahir: Purwakarta</p>
+                        <p>Tanggal lahir: 15 Juli</p>
+                        <p>Alamat: Perum Panorama blok G2 no 11</p>
+                        <p>Asal sekolah: Al-Azhar Purwakarta</p>
+                    </div>
+
+                    <!-- Pendidikan -->
+                    <div class="p-6 bg-slate-800/50 rounded-xl shadow-lg border-l-4 border-cyan-500">
+                        <h3 class="text-2xl font-semibold mb-3 text-cyan-300">Pendidikan</h3>
+                        <!-- Perguruan Tinggi (Sudah Ada) -->
+                        <div class="mb-4 pt-2 border-t border-slate-700/50">
+                            <p class="font-bold">Teknik Informatika</p>
+                            <p class="text-sm text-gray-400">Sekolah Tinggi Teknik Wastu Kancana (Tahun Masuk: 2025)</p>
+                            <p class="text-sm">Mempelajari dasar-dasar pemrograman, pengembangan web, kalkulus, dan logika matematika.</p>
+                        </div>
+                        
+                        <!-- SMA -->
+                        <div class="mb-4 pt-2 border-t border-slate-700/50">
+                            <p class="font-bold">MA Al-Azhar</p>
+                            <p class="text-sm text-gray-400">Purwakarta (2022 - 2025)</p>
+                            <p class="text-sm">Jurusan: Bahasa.</p>
+                        </div>
+                        
+                        <!-- SMP -->
+                        <div class="mb-4 pt-2 border-t border-slate-700/50">
+                            <p class="font-bold">SMP Al-Azhar</p>
+                            <p class="text-sm text-gray-400">Purwakarta (2019 - 2022)</p>
+                        </div>
+                        
+                        <!-- SD -->
+                        <div class="mb-4 pt-2 border-t border-slate-700/50">
+                            <p class="font-bold">SD Fathimiyah</p>
+                            <p class="text-sm text-gray-400">Bekasi (2013 - 2019)</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Keahlian -->
+                    <div class="p-6 bg-slate-800/50 rounded-xl shadow-lg border-l-4 border-violet-500">
+                        <h3 class="text-2xl font-semibold mb-4 text-violet-300">Keahlian Teknis</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-badge">HTML/CSS</span>
+                            <span class="skill-badge">C++ Dasar</span>
+                            <span class="skill-badge">Python</span>
+                            <span class="skill-badge">Algoritma</span>
+                            <span class="skill-badge">Canva specialist</span>
+                            <span class="skill-badge">Video editor (Capcut)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- c) Portfolio Page -->
+            <section id="portfolio" class="page-content">
+                <h2 class="text-4xl font-bold mb-8 border-b-4 border-cyan-400 pb-2 inline-block">Portofolio Proyek</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Proyek 1 -->
+                    <div class="project-card">
+                        <h4 class="text-xl font-bold mb-2 text-violet-400">Website Profil Cafe Van</h4>
+                        <p class="text-sm text-gray-400 mb-3">Tahun: 2025</p>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            Pembuatan website sederhana untuk menampilkan profil Cafe van, menggunakan HTML dan CSS murni.
+                        </p>
+                        <p class="text-xs font-mono text-cyan-400">Teknologi: HTML, CSS, Design.</p>
+                        <a href="https://dhishcbit.github.io/bareto-webs/frameset.html" class="project-link">Lihat Proyek &rarr;</a>
+                    </div>
+                    
+                    <!-- Proyek 2 -->
+                    <div class="project-card">
+                        <h4 class="text-xl font-bold mb-2 text-violet-400">Desain Canva sederhana</h4>
+                        <p class="text-sm text-gray-400 mb-3">Tahun: 2023-2025</p>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            Berikut adalah beberapa contoh desain-desain yang pernah saya buat di Canva. Ada poster, desain konten instagram osis, dan desain konten instagram cafe.
+                        </p>
+                        <p class="text-xs font-mono text-cyan-400">Teknologi: Canva.</p>
+                        <a href="https://drive.google.com/drive/folders/1qD3x3eAJU2SYafBim_UYoYVl0fnYQH-j" class="project-link">Lihat Proyek &rarr;</a>
+                    </div>
+            </section>
+
+            <!-- d) Contact Page -->
+            <section id="contact" class="page-content">
+                <h2 class="text-4xl font-bold mb-8 border-b-4 border-cyan-400 pb-2 inline-block">Hubungi Saya</h2>
+                
+                <p class="mb-6 text-lg">Anda dapat menghubungi saya melalui kontak di bawah ini.</p>
+
+                <div class="max-w-3xlg">
+                    <div class="p-8 bg-slate-800/70 rounded-xl shadow-2xl border border-violet-700/50 space-y-4">
+                        <h4 class="text-2xl font-semibold mb-2 text-violet-400">Informasi Kontak Langsung</h4>
+                        
+                        <!-- Email -->
+                        <div class="flex items-center space-x-3">
+                            <span class="text-cyan-400 text-xl">📧</span>
+                            <div>
+                                <p class="text-sm text-gray-300">Email pribadi</p>
+                                <p class="font-semibold"><a href="mailto:aufjkt00@gmail.com" class="text-cyan-500 hover:underline">aufjkt00@gmail.com</a></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <span class="text-cyan-400 text-xl">📧</span>
+                            <div>
+                                <p class="text-sm text-gray-300">Email Campus</p>
+                                <p class="font-semibold"><a href="mailto:251351021@wastukancana.ac.id" class="text-cyan-500 hover:underline">251351021@wastukancana.ac.id</a></p>
+                            </div>
+                        </div>
+
+                        <!-- No. Telepon/WA -->
+                        <div class="flex items-center space-x-3">
+                            <span class="text-cyan-400 text-xl">📱</span>
+                            <div>
+                                <p class="font-semibold">
+                                <a href="https://wa.me/6287825398752" class="text-cyan-500 hover:underline" target="_blank">0878-2539-8752</a></p>
+                            </div>
+                        </div>
+
+                        <!-- Alamat/Lokasi -->
+                        <div class="space-y-1 pt-4 border-t border-slate-700/50"></div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-cyan-400 text-xl">📍</span>
+                            <div>
+                                <p class="text-sm text-gray-300">Alamat Campus</p>
+                                <p class="font-semibold">Sekolah Tinggi Teknik Wastu Kancana</p>
+                                <p class="text-sm">Jl. Cikopak No.53 Sadang, Purwakarta, 41151</p>
+                            </div>
+                            
+                            <div class="flex items-start space-x-3">
+                                <span class="text-cyan-400 text-xl pt-1">📍</span>
+                                <div>
+                                    <p class="text-sm text-gray-300">Alamat Rumah</p>
+                                    <p class="font-semibold">Perumahan Panorama</p>
+                                    <p class="text-sm">Perum Panorama Blok G2 no 11 kec. Purwakarta Kab. Purwakarta, Jawa Barat 41115</p>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+
+                    <p class="mt-8 text-center text-sm text-gray-400">
+                        Terima kasih.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+</body>
+</html>
